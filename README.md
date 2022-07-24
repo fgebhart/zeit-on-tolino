@@ -5,6 +5,7 @@ This service is similar to
 * https://github.com/patrickvogel/zeit-on-tolino
 * https://github.com/mlux86/zeit-to-tolino
 * https://github.com/Maximilian5189/zeit-to-tolino
+
 with the main difference that this service is designed to be automated using github actions. By using
 a Github actions workflow for automating the down- and upload of the e-paper you don't have to worry
 about the runtime environment of the scripts. See installation instructions below.
