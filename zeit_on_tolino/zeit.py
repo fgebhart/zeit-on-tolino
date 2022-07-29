@@ -1,20 +1,33 @@
 import os
+from typing import Tuple
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 
 ENV_VAR_ZEIT_USER = "ZEIT_PREMIUM_USER"
 ENV_VAR_ZEIT_PW = "ZEIT_PREMIUM_PASSWORD"
+
 ZEIT_PREMIUM_URL = "https://premium.zeit.de/"
 ZEIT_DATE_FORMAT = "%d.%m.%Y"
+
 BUTTON_TEXT_TO_RECENT_EDITION = "ZUR AKTUELLEN AUSGABE"
 BUTTON_TEXT_DOWNLOAD_EPUB = "EPUB FÜR E-READER LADEN"
 
 
-def _login(webdriver: WebDriver) -> str:
-    username = os.environ[ENV_VAR_ZEIT_USER]
-    password = os.environ[ENV_VAR_ZEIT_PW]
+def _get_user_password() -> Tuple[str]:
+    try:
+        username = os.environ[ENV_VAR_ZEIT_USER]
+        password = os.environ[ENV_VAR_ZEIT_PW]
+        return username, password
+    except KeyError:
+        raise KeyError(
+            f"Ensure to export your ZEIT username and password as environment variables "
+            f"'{ENV_VAR_ZEIT_USER}' and '{ENV_VAR_ZEIT_PW}'. For Github Actions, use repository secrets."
+        )
 
+
+def _login(webdriver: WebDriver) -> str:
+    username, password = _get_user_password()
     webdriver.get(ZEIT_PREMIUM_URL)
 
     btn = webdriver.find_element(By.CLASS_NAME, "nav__login-link")

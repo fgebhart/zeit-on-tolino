@@ -22,6 +22,17 @@ def test_download_e_paper(webdriver, tmp_path) -> None:
     assert e_paper_path.suffix == ".epub"
 
 
+def test_no_credentials(webdriver) -> None:
+    # delete existing env vars
+    if zeit.ENV_VAR_ZEIT_USER in os.environ and zeit.ENV_VAR_ZEIT_PW in os.environ:
+        del os.environ[zeit.ENV_VAR_ZEIT_USER]
+        del os.environ[zeit.ENV_VAR_ZEIT_PW]
+
+    # verify meaningful error is raised
+    with pytest.raises(KeyError, match="Ensure to export your ZEIT username and password as environment variables"):
+        zeit.download_e_paper(webdriver)
+
+
 def test_wrong_credentials(webdriver) -> None:
     # set wrong credentials
     os.environ[zeit.ENV_VAR_ZEIT_USER] = "foo"
