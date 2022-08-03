@@ -39,6 +39,9 @@ jobs:
       env:
         ZEIT_PREMIUM_USER: ${{ secrets.ZEIT_PREMIUM_USER }}
         ZEIT_PREMIUM_PASSWORD: ${{ secrets.ZEIT_PREMIUM_PASSWORD }}
+        TOLINO_USER: ${{ secrets.TOLINO_USER }}
+        TOLINO_PASSWORD: ${{ secrets.TOLINO_PASSWORD }}
+        TOLINO_PARTNER_SHOP: ${{ secrets.TOLINO_PARTNER_SHOP }}
       run: |
         source .venv/bin/activate
         poetry run pytest tests/ -vv --color=yes
