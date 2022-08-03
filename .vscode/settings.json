@@ -1,5 +1,11 @@
 {
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
     "cSpell.words": [
-        "tolino"
-    ]
+        "Hugendubel",
+        "tolino",
+    ],
+    "terminal.integrated.env.osx": {
+        "PYTHONBREAKPOINT": "ipdb.set_trace"
+      }
 }
