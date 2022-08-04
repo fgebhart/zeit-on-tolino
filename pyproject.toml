@@ -37,3 +37,7 @@ include_trailing_comma = true
 
 [tool.black]
 line-length = 121
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "INFO"
