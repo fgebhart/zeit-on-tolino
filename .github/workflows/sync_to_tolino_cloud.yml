@@ -3,7 +3,8 @@ name: Periodic Sync
 
 on:
   schedule:
-    - cron: '0 22 * * THU'
+    - cron: '10 22 * * THU'
+    # - cron: '0 22 * * WED'
 
 
 jobs:
@@ -47,4 +48,4 @@ jobs:
         TOLINO_PARTNER_SHOP: ${{ secrets.TOLINO_PARTNER_SHOP }}
       run: |
         source .venv/bin/activate
-        poetry run python zeit_on_tolino.py
+        poetry run python sync.py
