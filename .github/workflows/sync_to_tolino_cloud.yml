@@ -3,7 +3,7 @@ name: Periodic Sync
 
 on:
   schedule:
-    - cron: '10 22 * * THU'
+    - cron: '30 20 * * THU'
     # - cron: '0 22 * * WED'
 
 
