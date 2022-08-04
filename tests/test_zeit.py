@@ -9,8 +9,8 @@ ZEIT_E_PAPER_URL = "https://epaper.zeit.de/abo/diezeit/"
 
 
 def test__login(webdriver) -> None:
-    url = zeit._login(webdriver)
-    assert url == ZEIT_E_PAPER_URL
+    zeit._login(webdriver)
+    assert webdriver.current_url == ZEIT_E_PAPER_URL
 
 
 def test_download_e_paper(webdriver, tmp_path) -> None:

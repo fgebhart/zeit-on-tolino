@@ -13,6 +13,10 @@ def test__login(webdriver) -> None:
 
 
 def _delete_last_uploaded_epub(webdriver) -> None:
+    # refresh page to ensure menu is closed for further interaction with the page
+    webdriver.refresh()
+    time.sleep(3)
+
     # wait for overlay object to be invisible
     WebDriverWait(webdriver, 10).until(EC.invisibility_of_element_located((By.ID, "splash-screen")))
     # note, the index=0 indicates that the most recently uploaded epub should be deleted as it is listed first
@@ -23,21 +27,21 @@ def _delete_last_uploaded_epub(webdriver) -> None:
         )
     )
     epub_menu.click()
-    time.sleep(3)
+    time.sleep(2)
 
     # click on delete
     for span in webdriver.find_elements(By.TAG_NAME, "span"):
         if span.text == "Löschen":
             span.click()
             break
-    time.sleep(3)
+    time.sleep(2)
 
     # confirm delete by clicking on 'ok'
     for span in webdriver.find_elements(By.TAG_NAME, "span"):
         if span.text == "OK":
             span.click()
             break
-    time.sleep(3)
+    time.sleep(2)
 
 
 def test_upload_epub(webdriver, test_epub_path, test_epub_title) -> None:
