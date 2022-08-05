@@ -3,8 +3,7 @@ name: Periodic Sync
 
 on:
   schedule:
-    - cron: '30 20 * * THU'
-    # - cron: '0 22 * * WED'
+    - cron: '8 20 * * WED'    # equals each Wednesday at 22:08 CEST (to avoid high load on github actions at the full hour)
 
 
 jobs:
