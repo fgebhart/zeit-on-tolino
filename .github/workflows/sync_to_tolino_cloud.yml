@@ -3,7 +3,8 @@ name: Periodic Sync
 
 on:
   schedule:
-    - cron: '8 20 * * WED'    # equals each Wednesday at 22:08 CEST (to avoid high load on github actions at the full hour)
+      # equals each Wednesday at 22:08 CEST (to avoid high load on github actions at the full hour)
+    - cron: '8 20 * * WED'
 
 
 jobs:
@@ -26,17 +27,6 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
         installer-parallel: true
-
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v2
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-dev
 
     - name: Run Zeit-on-Tolino Script
       env:
