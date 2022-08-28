@@ -18,3 +18,9 @@ have to worry about the runtime environment of the scripts. See usage instructio
    5. `ZEIT_PREMIUM_PASSWORD`: The associated password.
 4. Observe that your forked repo automatically triggers the sync,
    [given the configuration of the scheduled trigger](https://github.com/fgebhart/zeit-on-tolino/blob/main/.github/workflows/sync_to_tolino_cloud.yml#L5-L7),
+
+
+## Update your fork
+To benefit from recent changes in the [upstream zeit-on-tolino repo](https://github.com/fgebhart/zeit-on-tolino) use the
+`Update Fork` github actions workflow. Navigate to your github actions and dispatch the workflow by manually clicking via
+the github ui.
