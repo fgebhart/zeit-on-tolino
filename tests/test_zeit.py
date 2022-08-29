@@ -29,7 +29,10 @@ def test_no_credentials(webdriver) -> None:
         del os.environ[zeit.ENV_VAR_ZEIT_PW]
 
     # verify meaningful error is raised
-    with pytest.raises(KeyError, match="Ensure to export your ZEIT username and password as environment variables"):
+    with pytest.raises(
+        zeit.MissingEnvironmentVariable,
+        match="Ensure to export your ZEIT username and password as environment variables",
+    ):
         zeit.download_e_paper(webdriver)
 
 

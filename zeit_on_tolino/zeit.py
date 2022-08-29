@@ -7,6 +7,9 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+from zeit_on_tolino import MissingEnvironmentVariable
+from zeit_on_tolino.web import Delay
+
 ENV_VAR_ZEIT_USER = "ZEIT_PREMIUM_USER"
 ENV_VAR_ZEIT_PW = "ZEIT_PREMIUM_PASSWORD"
 
@@ -23,7 +26,7 @@ def _get_credentials() -> Tuple[str, str]:
         password = os.environ[ENV_VAR_ZEIT_PW]
         return username, password
     except KeyError:
-        raise KeyError(
+        raise MissingEnvironmentVariable(
             f"Ensure to export your ZEIT username and password as environment variables "
             f"'{ENV_VAR_ZEIT_USER}' and '{ENV_VAR_ZEIT_PW}'. For Github Actions, use repository secrets."
         )
@@ -33,7 +36,7 @@ def _login(webdriver: WebDriver) -> None:
     username, password = _get_credentials()
     webdriver.get(ZEIT_LOGIN_URL)
 
-    WebDriverWait(webdriver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "nav__login-link")))
+    WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((By.CLASS_NAME, "nav__login-link")))
     btn = webdriver.find_element(By.CLASS_NAME, "nav__login-link")
     btn.click()
     assert "anmelden" in webdriver.current_url, webdriver.current_url
@@ -45,24 +48,24 @@ def _login(webdriver: WebDriver) -> None:
 
     btn = webdriver.find_element(By.CLASS_NAME, "submit-button.log")
     btn.click()
-    time.sleep(3)
+    time.sleep(Delay.small)
 
     if "anmelden" in webdriver.current_url:
         raise RuntimeError("Failed to login, check your login credentials.")
 
-    WebDriverWait(webdriver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "page-section-header")))
+    WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((By.CLASS_NAME, "page-section-header")))
 
 
 def download_e_paper(webdriver: WebDriver) -> str:
     _login(webdriver)
 
-    time.sleep(3)
+    time.sleep(Delay.small)
     for link in webdriver.find_elements(By.TAG_NAME, "a"):
         if link.text == BUTTON_TEXT_TO_RECENT_EDITION:
             link.click()
             break
 
-    time.sleep(3)
+    time.sleep(Delay.small)
     file_name = None
     for link in webdriver.find_elements(By.TAG_NAME, "a"):
         if link.text == BUTTON_TEXT_DOWNLOAD_EPUB:
