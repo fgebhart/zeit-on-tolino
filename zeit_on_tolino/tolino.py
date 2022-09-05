@@ -9,13 +9,10 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from zeit_on_tolino import MissingEnvironmentVariable, epub
+from zeit_on_tolino import epub
+from zeit_on_tolino.env_vars import EnvVars, MissingEnvironmentVariable
 from zeit_on_tolino.tolino_partner import PartnerDetails
 from zeit_on_tolino.web import Delay
-
-ENV_VAR_TOLINO_USER = "TOLINO_USER"
-ENV_VAR_TOLINO_PW = "TOLINO_PASSWORD"
-ENV_VAR_TOLINO_PARTNER_SHOP = "TOLINO_PARTNER_SHOP"
 
 TOLINO_CLOUD_LOGIN_URL = "https://webreader.mytolino.com/"
 TOLINO_COUNTRY_TO_SELECT = "Deutschland"  # TODO make country a partner shop detail depending on selected partner shop
@@ -30,14 +27,14 @@ log = logging.getLogger(__name__)
 
 def _get_credentials() -> Tuple[str, str, str]:
     try:
-        username = os.environ[ENV_VAR_TOLINO_USER]
-        password = os.environ[ENV_VAR_TOLINO_PW]
-        partner_shop = os.environ[ENV_VAR_TOLINO_PARTNER_SHOP]
+        username = os.environ[EnvVars.TOLINO_USER]
+        password = os.environ[EnvVars.TOLINO_PASSWORD]
+        partner_shop = os.environ[EnvVars.TOLINO_PARTNER_SHOP]
         return username, password, partner_shop
     except KeyError:
         raise MissingEnvironmentVariable(
             f"Ensure to export your tolino username, password and partner shop as environment variables "
-            f"'{ENV_VAR_TOLINO_USER}', '{ENV_VAR_TOLINO_PW}' and '{ENV_VAR_TOLINO_PARTNER_SHOP}'. "
+            f"'{EnvVars.TOLINO_USER}', '{EnvVars.TOLINO_PASSWORD}' and '{EnvVars.TOLINO_PARTNER_SHOP}'. "
             f"For Github Actions, use repository secrets."
         )
 
@@ -63,7 +60,8 @@ def _login(webdriver: WebDriver) -> None:
         raise RuntimeError(f"Could not select desired country '{TOLINO_COUNTRY_TO_SELECT}'.")
 
     # select partner shop
-    WebDriverWait(webdriver, Delay.medium).until(
+    time.sleep(Delay.small)
+    WebDriverWait(webdriver, Delay.large).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="ftu-resellerSelection-resellerList"]'))
     )
     for div in webdriver.find_elements(By.TAG_NAME, "div"):
