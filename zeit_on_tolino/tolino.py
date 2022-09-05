@@ -44,7 +44,7 @@ def _get_credentials() -> Tuple[str, str, str]:
 
 def _login(webdriver: WebDriver) -> None:
     username, password, partner_shop = _get_credentials()
-    pd = getattr(PartnerDetails, partner_shop.lower()).value
+    shop = getattr(PartnerDetails, partner_shop.lower()).value
     webdriver.get(TOLINO_CLOUD_LOGIN_URL)
 
     # select country
@@ -67,11 +67,11 @@ def _login(webdriver: WebDriver) -> None:
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="ftu-resellerSelection-resellerList"]'))
     )
     for div in webdriver.find_elements(By.TAG_NAME, "div"):
-        if pd.shop_image_keyword in div.get_attribute("style"):
+        if shop.shop_image_keyword in div.get_attribute("style"):
             div.click()
             break
     else:
-        raise RuntimeError(f"Could not select desired partner shop '{pd.shop_image_keyword}'.")
+        raise RuntimeError(f"Could not select desired partner shop '{shop.shop_image_keyword}'.")
 
     # click on login button
     WebDriverWait(webdriver, Delay.medium).until(
@@ -85,22 +85,25 @@ def _login(webdriver: WebDriver) -> None:
         raise RuntimeError("Could not find login button.")
 
     # login with partner shop credentials
-    WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((pd.user.by, pd.user.value)))
-    username_field = webdriver.find_element(pd.user.by, pd.user.value)
+    WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((shop.user.by, shop.user.value)))
+    username_field = webdriver.find_element(shop.user.by, shop.user.value)
+
     username_field.send_keys(username)
-    password_field = webdriver.find_element(pd.password.by, pd.password.value)
+    password_field = webdriver.find_element(shop.password.by, shop.password.value)
     password_field.send_keys(password)
 
-    btn = webdriver.find_element(pd.login_button.by, pd.login_button.value)
+    btn = webdriver.find_element(shop.login_button.by, shop.login_button.value)
     btn.click()
-    WebDriverWait(webdriver, Delay.large).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-test-id="library-drawer-labelLoggedIn"]'))
-    )
 
 
 def upload_e_paper(webdriver: WebDriver, file_path: Path) -> None:
     log.info("logging into tolino cloud...")
     _login(webdriver)
+
+    # wait until logged in
+    WebDriverWait(webdriver, Delay.large).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-test-id="library-drawer-labelLoggedIn"]'))
+    )
 
     # click on 'my books'
     my_books_button_css = 'span[data-test-id="library-drawer-MyBooks"]'

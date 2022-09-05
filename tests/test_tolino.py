@@ -10,6 +10,10 @@ from zeit_on_tolino.web import Delay
 
 def test__login(webdriver) -> None:
     tolino._login(webdriver)
+    # wait until logged in
+    WebDriverWait(webdriver, Delay.large).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-test-id="library-drawer-labelLoggedIn"]'))
+    )
     assert "Angemeldet" in webdriver.page_source
 
 
@@ -53,3 +57,13 @@ def test_upload_epub(webdriver, test_epub_path, test_epub_title) -> None:
     # cleanup uploaded test epub
     _delete_last_uploaded_epub(webdriver)
     assert test_epub_title not in webdriver.page_source
+
+
+def test__login_with_thalia__failure(monkeypatch, webdriver) -> None:
+    # This test verifies, that the shop details for `thalia` are correct. However
+    # the login attempt fails, as the credentials are incorrect
+    monkeypatch.setenv(tolino.ENV_VAR_TOLINO_PARTNER_SHOP, "thalia")
+    monkeypatch.setenv(tolino.ENV_VAR_TOLINO_USER, "foo")
+    monkeypatch.setenv(tolino.ENV_VAR_TOLINO_PW, "baa")
+    tolino._login(webdriver)
+    assert "Anmeldung war nicht erfolgreich" in webdriver.page_source

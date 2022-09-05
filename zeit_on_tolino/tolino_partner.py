@@ -17,9 +17,9 @@ class ShopDetails(BaseModel):
 
 
 thalia = ShopDetails(
-    user=SeleniumItem(by=By.NAME, value="email"),
-    password=SeleniumItem(by=By.NAME, value="password"),
-    login_button=SeleniumItem(by="", value=""),  # TODO
+    user=SeleniumItem(by=By.ID, value="j_username"),
+    password=SeleniumItem(by=By.ID, value="j_password"),
+    login_button=SeleniumItem(by=By.CLASS_NAME, value="btn-primary.btn-lg"),
     shop_image_keyword="thalia",
 )
 
