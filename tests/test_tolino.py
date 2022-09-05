@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from zeit_on_tolino import tolino
+from zeit_on_tolino.env_vars import EnvVars
 from zeit_on_tolino.web import Delay
 
 
@@ -62,8 +63,8 @@ def test_upload_epub(webdriver, test_epub_path, test_epub_title) -> None:
 def test__login_with_thalia__failure(monkeypatch, webdriver) -> None:
     # This test verifies, that the shop details for `thalia` are correct. However
     # the login attempt fails, as the credentials are incorrect
-    monkeypatch.setenv(tolino.ENV_VAR_TOLINO_PARTNER_SHOP, "thalia")
-    monkeypatch.setenv(tolino.ENV_VAR_TOLINO_USER, "foo")
-    monkeypatch.setenv(tolino.ENV_VAR_TOLINO_PW, "baa")
+    monkeypatch.setenv(EnvVars.TOLINO_PARTNER_SHOP, "thalia")
+    monkeypatch.setenv(EnvVars.TOLINO_USER, "foo")
+    monkeypatch.setenv(EnvVars.TOLINO_PASSWORD, "baa")
     tolino._login(webdriver)
     assert "Anmeldung war nicht erfolgreich" in webdriver.page_source

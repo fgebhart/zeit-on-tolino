@@ -1,2 +1,0 @@
-class MissingEnvironmentVariable(Exception):
-    pass

@@ -7,11 +7,8 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from zeit_on_tolino import MissingEnvironmentVariable
+from zeit_on_tolino.env_vars import EnvVars, MissingEnvironmentVariable
 from zeit_on_tolino.web import Delay
-
-ENV_VAR_ZEIT_USER = "ZEIT_PREMIUM_USER"
-ENV_VAR_ZEIT_PW = "ZEIT_PREMIUM_PASSWORD"
 
 ZEIT_LOGIN_URL = "https://premium.zeit.de/"
 ZEIT_DATE_FORMAT = "%d.%m.%Y"
@@ -22,13 +19,14 @@ BUTTON_TEXT_DOWNLOAD_EPUB = "EPUB FÜR E-READER LADEN"
 
 def _get_credentials() -> Tuple[str, str]:
     try:
-        username = os.environ[ENV_VAR_ZEIT_USER]
-        password = os.environ[ENV_VAR_ZEIT_PW]
+        username = os.environ[EnvVars.ZEIT_PREMIUM_USER]
+        password = os.environ[EnvVars.ZEIT_PREMIUM_PASSWORD]
         return username, password
     except KeyError:
         raise MissingEnvironmentVariable(
             f"Ensure to export your ZEIT username and password as environment variables "
-            f"'{ENV_VAR_ZEIT_USER}' and '{ENV_VAR_ZEIT_PW}'. For Github Actions, use repository secrets."
+            f"'{EnvVars.ZEIT_PREMIUM_USER}' and '{EnvVars.ZEIT_PREMIUM_PASSWORD}'. For "
+            "Github Actions, use repository secrets."
         )
 
 
