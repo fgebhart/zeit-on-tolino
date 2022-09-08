@@ -5,6 +5,7 @@ on:
   schedule:
       # equals each Wednesday at 22:08 CEST (to avoid high load on github actions at the full hour)
     - cron: '8 20 * * WED'
+  workflow_dispatch:  # allow running sync via github ui button
 
 
 jobs:
