@@ -9,16 +9,17 @@ have to worry about the runtime environment of the scripts. See usage instructio
 
 ## Usage
 1. [Fork this repo](https://github.com/fgebhart/zeit-on-tolino/fork) to your own github space
-2. Go to your repos settings and navigate to the secrets page (Settings > Security > Secrets > Actions)
-3. Add the following secrets by clicking on the "New repository secret" button:
+2. Go to your repos settings and navigate to Actions > General > Actions permissions and enable
+   "Allow all actions and reusable workflows".
+3. Now navigate to the Secrets page: Settings > Security > Secrets > Actions.
+4. Add the following secrets by clicking on the "New repository secret" button:
    1. `TOLINO_PARTNER_SHOP`: The name of the shop you purchased your device from (see [supported shops](https://github.com/fgebhart/zeit-on-tolino#supported-tolino-partner-shops)).
    2. `TOLINO_USER`: The username (usually an email address) you use for logging into the tolino cloud.
    3. `TOLINO_PASSWORD`: The associated password.
    4. `ZEIT_PREMIUM_USER`: Your ZEIT premium username.
    5. `ZEIT_PREMIUM_PASSWORD`: The associated password.
-4. Observe that your forked repo automatically triggers the sync,
-   [given the configuration of the scheduled trigger](https://github.com/fgebhart/zeit-on-tolino/blob/main/.github/workflows/sync_to_tolino_cloud.yml#L5-L7),
-
+5. Observe that your forked repo automatically triggers the sync,
+   [given the configuration of the scheduled trigger](https://github.com/fgebhart/zeit-on-tolino/blob/main/.github/workflows/sync_to_tolino_cloud.yml#L5-L7).
 
 ## Supported Tolino Partner Shops
 Currently not all tolino partner shops are supported. The following shops are supported and should work out of the box:
