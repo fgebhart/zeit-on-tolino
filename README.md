@@ -30,6 +30,15 @@ you want to use is missing, feel free to either [open an issue](https://github.c
 raise a PR which adds the additional shop. Check out [Contributing](https://github.com/fgebhart/zeit-on-tolino#contributing)
 for more details.
 
+## Manually Sync the Zeit E-Paper to your Tolino Cloud
+In case you want to manually sync the latest zeit e-paper to your tolino cloud, follow these steps:
+1. Clone the repo to your local machine via `git clone git@github.com:fgebhart/zeit-on-tolino.git` and `cd zeit-on-tolino`
+2. Install the requirements via `pip install poetry` and `poetry install`
+3. Export the above mentioned environment variables to your local environment
+4. Run the python sync script via `python sync.py`
+
+This script can of course also be executed in a cron-scheduled fashion on a raspberry by or similar.
+
 ## Update your fork
 To benefit from recent changes in the [upstream zeit-on-tolino repo](https://github.com/fgebhart/zeit-on-tolino) use the
 `Update Fork` github actions workflow. Navigate to your github actions and dispatch the workflow by manually clicking via
