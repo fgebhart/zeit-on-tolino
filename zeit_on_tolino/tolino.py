@@ -29,7 +29,7 @@ def _get_credentials() -> Tuple[str, str, str]:
     try:
         username = os.environ[EnvVars.TOLINO_USER]
         password = os.environ[EnvVars.TOLINO_PASSWORD]
-        partner_shop = os.environ[EnvVars.TOLINO_PARTNER_SHOP]
+        partner_shop = os.environ[EnvVars.TOLINO_PARTNER_SHOP].lower()
         return username, password, partner_shop
     except KeyError:
         raise MissingEnvironmentVariable(
