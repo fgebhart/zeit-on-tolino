@@ -1,6 +1,7 @@
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -18,7 +19,7 @@ def test__login(webdriver) -> None:
     assert "Angemeldet" in webdriver.page_source
 
 
-def _delete_last_uploaded_epub(webdriver) -> None:
+def _delete_last_uploaded_epub(webdriver: WebDriver) -> None:
     # refresh page to ensure menu is closed for further interaction with the page
     webdriver.refresh()
     time.sleep(Delay.small)
@@ -52,7 +53,7 @@ def _delete_last_uploaded_epub(webdriver) -> None:
 
 def test_upload_epub(webdriver, test_epub_path, test_epub_title) -> None:
     # verify test epub gets uploaded
-    tolino.upload_e_paper(webdriver, test_epub_path)
+    tolino.upload_e_paper(webdriver, test_epub_path, test_epub_title)
     assert test_epub_title in webdriver.page_source
 
     # cleanup uploaded test epub
