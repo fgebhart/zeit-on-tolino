@@ -94,7 +94,7 @@ def _login(webdriver: WebDriver) -> None:
     btn.click()
 
 
-def upload_e_paper(webdriver: WebDriver, file_path: Path) -> None:
+def upload_e_paper(webdriver: WebDriver, file_path: Path, e_paper_title: str) -> None:
     log.info("logging into tolino cloud...")
     _login(webdriver)
 
@@ -106,12 +106,17 @@ def upload_e_paper(webdriver: WebDriver, file_path: Path) -> None:
     # click on 'my books'
     my_books_button_css = 'span[data-test-id="library-drawer-MyBooks"]'
     WebDriverWait(webdriver, Delay.small).until(EC.presence_of_element_located((By.CSS_SELECTOR, my_books_button_css)))
+    WebDriverWait(webdriver, Delay.small).until(EC.element_to_be_clickable((By.CSS_SELECTOR, my_books_button_css)))
     my_books_button = webdriver.find_element(By.CSS_SELECTOR, my_books_button_css)
+    time.sleep(Delay.small)
     my_books_button.click()
 
-    # click on vertical ellipsis to get to drop down menu
     menu_css = 'svg[data-test-id="library-headerBar-overflowMenu-button"]'
     WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((By.CSS_SELECTOR, menu_css)))
+    if e_paper_title in webdriver.page_source:
+        raise FileExistsError(f"The title '{e_paper_title}' is already present in tolino cloud. Stopping.")
+
+    # click on vertical ellipsis to get to drop down menu
     menu = webdriver.find_element(By.CSS_SELECTOR, menu_css)
     menu.click()
 
@@ -134,7 +139,7 @@ def upload_e_paper(webdriver: WebDriver, file_path: Path) -> None:
     time.sleep(Delay.medium)
 
     webdriver.refresh()
-    log.info("waiting for book titles to be present...")
+    log.info("waiting for book to be present...")
     WebDriverWait(webdriver, Delay.medium).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, 'span[data-test-id="library-myBooks-titles-list-0-title"]'))
     )
@@ -143,3 +148,4 @@ def upload_e_paper(webdriver: WebDriver, file_path: Path) -> None:
     epub_title = epub.get_epub_info(file_path)["title"]
     assert epub_title in webdriver.page_source, f"Title '{epub_title}' not found in page source!"
     log.info(f"book title '{epub_title}' is present.")
+    log.info("successfully uploaded ZEIT e-paper to tolino cloud.")
