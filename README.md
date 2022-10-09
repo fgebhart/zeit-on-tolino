@@ -23,8 +23,6 @@ have to worry about the runtime environment of the scripts. See usage instructio
 
 For a more detailed step-by-step guide check out [my blog post about `zeit-on-tolino`](https://blog.fgebhart.dev/blog/auto-sync-zeit-epub-to-your-tolino/).
 
-## Contributing
-All kinds of contributions are welcome! 
 
 ## FAQ
 
@@ -59,3 +57,33 @@ the GitHub UI.
 ### The Sync Github Actions Workflow is not triggered in my forked Repo?
 After forking the repo you need to enable running workflows for your repo. Go to your repo's settings and navigate to
 Actions > General > Actions permissions and enable "Allow all actions and reusable workflows".
+
+
+## Contributing
+All kinds of contributions are welcome! 
+
+### Setup Dev Environment
+
+Clone the repo:
+
+```bash
+git clone git@github.com:fgebhart/zeit-on-tolino.git && cd zeit-on-tolino
+```
+
+and install the requirements using poetry:
+
+```bash
+poetry install
+```
+
+### Running the tests
+
+Note, running the tests requires exporting the above-mentioned environment variables because the tests simulate the
+upload flow of a dummy epub file to your Tolino cloud. Be aware of this side-effect, though, the dummy file will be
+removed from your Tolino cloud once the upload was successful.
+
+Run the tests via:
+
+```bash
+pytest tests
+```

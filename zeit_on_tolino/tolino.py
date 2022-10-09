@@ -9,7 +9,6 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from zeit_on_tolino import epub
 from zeit_on_tolino.env_vars import EnvVars, MissingEnvironmentVariable
 from zeit_on_tolino.tolino_partner import PartnerDetails
 from zeit_on_tolino.web import Delay
@@ -145,7 +144,6 @@ def upload_e_paper(webdriver: WebDriver, file_path: Path, e_paper_title: str) ->
     )
     log.info("book titles are present.")
 
-    epub_title = epub.get_epub_info(file_path)["title"]
-    assert epub_title in webdriver.page_source, f"Title '{epub_title}' not found in page source!"
-    log.info(f"book title '{epub_title}' is present.")
+    assert e_paper_title in webdriver.page_source, f"Title '{e_paper_title}' not found in page source!"
+    log.info(f"book title '{e_paper_title}' is present.")
     log.info("successfully uploaded ZEIT e-paper to tolino cloud.")
