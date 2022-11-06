@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import NoSuchElementException
 
 from zeit_on_tolino.env_vars import EnvVars, MissingEnvironmentVariable
 from zeit_on_tolino.tolino_partner import PartnerDetails
@@ -93,6 +94,14 @@ def _login(webdriver: WebDriver) -> None:
     btn.click()
 
 
+def element_exists(webdriver: WebDriver, by: str, value: str) -> bool:
+    try:
+        webdriver.find_element(by, value)
+    except NoSuchElementException:
+        return False
+    return True
+
+
 def upload_e_paper(webdriver: WebDriver, file_path: Path, e_paper_title: str) -> None:
     log.info("logging into tolino cloud...")
     _login(webdriver)
@@ -101,6 +110,15 @@ def upload_e_paper(webdriver: WebDriver, file_path: Path, e_paper_title: str) ->
     WebDriverWait(webdriver, Delay.large).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, 'span[data-test-id="library-drawer-labelLoggedIn"]'))
     )
+
+    # dismiss advertisement popup
+    popup_button_css = 'div[data-test-id="dialogButton-0"]'
+    if element_exists(webdriver, by=By.CSS_SELECTOR, value=popup_button_css):
+        WebDriverWait(webdriver, Delay.small).until(EC.presence_of_element_located((By.CSS_SELECTOR, popup_button_css)))
+        WebDriverWait(webdriver, Delay.small).until(EC.element_to_be_clickable((By.CSS_SELECTOR, popup_button_css)))
+        popup_button = webdriver.find_element(By.CSS_SELECTOR, popup_button_css)
+        time.sleep(Delay.small)
+        popup_button.click()
 
     # click on 'my books'
     my_books_button_css = 'span[data-test-id="library-drawer-MyBooks"]'
