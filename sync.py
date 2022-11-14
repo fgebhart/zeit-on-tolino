@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     # upload to tolino cloud
     log.info("upload ZEIT e-paper to tolino cloud...")
-    tolino.upload_e_paper(webdriver, e_paper_path, e_paper_title)
+    tolino.login_and_upload(webdriver, e_paper_path, e_paper_title)
 
     webdriver.quit()
     log.info("done.")
