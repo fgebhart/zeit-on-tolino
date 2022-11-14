@@ -1,3 +1,4 @@
+import logging
 import time
 
 from selenium.webdriver.common.by import By
@@ -28,7 +29,7 @@ def _delete_last_uploaded_epub(webdriver: WebDriver) -> None:
     WebDriverWait(webdriver, Delay.medium).until(EC.invisibility_of_element_located((By.ID, "splash-screen")))
     # note, the index=0 indicates that the most recently uploaded epub should be deleted as it is listed first
     index = 0
-    epub_menu = WebDriverWait(webdriver, Delay.medium).until(
+    epub_menu = WebDriverWait(webdriver, Delay.large).until(
         EC.element_to_be_clickable(
             (By.CSS_SELECTOR, f'div[data-test-id="library-myBooks-titles-list-{index}-contextMenu"]')
         )
@@ -51,10 +52,16 @@ def _delete_last_uploaded_epub(webdriver: WebDriver) -> None:
     time.sleep(Delay.small)
 
 
-def test_upload_epub(webdriver, test_epub_path, test_epub_title) -> None:
+def test_upload_epub(webdriver, test_epub_path, test_epub_title, caplog) -> None:
+    caplog.set_level(logging.INFO)
+
     # verify test epub gets uploaded
-    tolino.upload_e_paper(webdriver, test_epub_path, test_epub_title)
+    tolino.login_and_upload(webdriver, test_epub_path, test_epub_title)
     assert test_epub_title in webdriver.page_source
+
+    # try uploading again to verify it will simply skip uploading
+    tolino._upload(webdriver, test_epub_path, test_epub_title)
+    assert f"The title '{test_epub_title}' is already present in tolino cloud. Skipping upload." in caplog.text
 
     # cleanup uploaded test epub
     _delete_last_uploaded_epub(webdriver)
