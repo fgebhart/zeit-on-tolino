@@ -1,13 +1,12 @@
 
 name: Python Tests
 
-on:
-  push:
+on: ["push"]
 
 jobs:
   test:
     name: Test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04  # pinned to 20 as 22 was lacking geckodriver
 
     steps:
     - name: Checkout
@@ -31,5 +30,4 @@ jobs:
         TOLINO_USER: ${{ secrets.TOLINO_USER }}
         TOLINO_PASSWORD: ${{ secrets.TOLINO_PASSWORD }}
         TOLINO_PARTNER_SHOP: ${{ secrets.TOLINO_PARTNER_SHOP }}
-        GECKOWEBDRIVER: /usr/local/share/gecko_driver
       run: poetry run pytest tests/ -vv --color=yes
