@@ -31,4 +31,5 @@ jobs:
         TOLINO_USER: ${{ secrets.TOLINO_USER }}
         TOLINO_PASSWORD: ${{ secrets.TOLINO_PASSWORD }}
         TOLINO_PARTNER_SHOP: ${{ secrets.TOLINO_PARTNER_SHOP }}
+        GECKOWEBDRIVER: /usr/local/share/gecko_driver
       run: poetry run pytest tests/ -vv --color=yes
