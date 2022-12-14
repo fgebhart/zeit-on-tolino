@@ -15,6 +15,7 @@ ZEIT_DATE_FORMAT = "%d.%m.%Y"
 
 BUTTON_TEXT_TO_RECENT_EDITION = "ZUR AKTUELLEN AUSGABE"
 BUTTON_TEXT_DOWNLOAD_EPUB = "EPUB FÜR E-READER LADEN"
+BUTTON_TEXT_EPUB_DOWNLOAD_IS_PENDING = "EPUB FOLGT IN KÜRZE"
 
 
 def _get_credentials() -> Tuple[str, str]:
@@ -46,7 +47,7 @@ def _login(webdriver: WebDriver) -> None:
 
     btn = webdriver.find_element(By.CLASS_NAME, "submit-button.log")
     btn.click()
-    time.sleep(Delay.small)
+    time.sleep(Delay.medium)
 
     if "anmelden" in webdriver.current_url:
         raise RuntimeError("Failed to login, check your login credentials.")
@@ -62,6 +63,9 @@ def download_e_paper(webdriver: WebDriver) -> str:
         if link.text == BUTTON_TEXT_TO_RECENT_EDITION:
             link.click()
             break
+
+    if BUTTON_TEXT_EPUB_DOWNLOAD_IS_PENDING in webdriver.page_source:
+        raise RuntimeError("New ZEIT release is available, however, EPUB version is not. Retry again later.")
 
     time.sleep(Delay.small)
     file_name = None
