@@ -47,7 +47,7 @@ def _login(webdriver: WebDriver) -> None:
 
     btn = webdriver.find_element(By.CLASS_NAME, "submit-button.log")
     btn.click()
-    time.sleep(Delay.medium)
+    time.sleep(Delay.small)
 
     if "anmelden" in webdriver.current_url:
         raise RuntimeError("Failed to login, check your login credentials.")
