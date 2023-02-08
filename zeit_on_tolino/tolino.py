@@ -51,7 +51,7 @@ def _login(webdriver: WebDriver) -> None:
         EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="ftu-countrySelection-countryList"]'))
     )
     WebDriverWait(webdriver, Delay.medium).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="ftu-country-de-DE"]'))
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'div[data-test-id="ftu-country-en-DE"]'))
     )
     time.sleep(Delay.small)
     for div in webdriver.find_elements(By.TAG_NAME, "div"):
