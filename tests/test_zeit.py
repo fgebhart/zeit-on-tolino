@@ -15,10 +15,8 @@ def test__login(webdriver) -> None:
 
 
 def test_download_e_paper(webdriver, tmp_path) -> None:
-    e_paper_name = zeit.download_e_paper(webdriver)
-    assert isinstance(e_paper_name, str)
-
-    e_paper_path = Path(tmp_path) / e_paper_name
+    e_paper_path = zeit.download_e_paper(webdriver)
+    assert isinstance(e_paper_path, Path)
     assert e_paper_path.is_file()
     assert e_paper_path.suffix == ".epub"
 

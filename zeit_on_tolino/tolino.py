@@ -160,8 +160,6 @@ def _upload(webdriver: WebDriver, file_path: Path, e_paper_title: str) -> None:
     WebDriverWait(webdriver, Delay.medium).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, 'span[data-test-id="library-myBooks-titles-list-0-title"]'))
     )
-    log.info("book titles are present.")
-
     assert e_paper_title in webdriver.page_source, f"Title '{e_paper_title}' not found in page source!"
     log.info(f"book title '{e_paper_title}' is present.")
     log.info("successfully uploaded ZEIT e-paper to tolino cloud.")

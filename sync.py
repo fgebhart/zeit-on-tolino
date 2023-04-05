@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 
 from zeit_on_tolino import env_vars, epub, tolino, web, zeit
 
@@ -16,8 +15,7 @@ if __name__ == "__main__":
 
     # download ZEIT
     log.info("downloading most recent ZEIT e-paper...")
-    e_paper_name = zeit.download_e_paper(webdriver)
-    e_paper_path = Path(web.DOWNLOAD_PATH) / e_paper_name
+    e_paper_path = zeit.download_e_paper(webdriver)
     e_paper_title = epub.get_epub_info(e_paper_path)["title"]
     assert e_paper_path.is_file()
     log.info(f"successfully finished download of '{e_paper_title}'")
