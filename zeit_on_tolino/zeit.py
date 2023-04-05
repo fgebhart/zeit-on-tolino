@@ -1,5 +1,7 @@
+import glob
 import os
 import time
+from pathlib import Path
 from typing import Tuple
 
 from selenium.webdriver.common.by import By
@@ -55,6 +57,12 @@ def _login(webdriver: WebDriver) -> None:
     WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((By.CLASS_NAME, "page-section-header")))
 
 
+def _get_latest_downloaded_file_path(download_dir: str) -> Path:
+    download_dir_files = glob.glob(f"{download_dir}/*")
+    latest_file = max(download_dir_files, key=os.path.getctime)
+    return Path(latest_file)
+
+
 def download_e_paper(webdriver: WebDriver) -> str:
     _login(webdriver)
 
@@ -68,14 +76,14 @@ def download_e_paper(webdriver: WebDriver) -> str:
         raise RuntimeError("New ZEIT release is available, however, EPUB version is not. Retry again later.")
 
     time.sleep(Delay.small)
-    file_name = None
     for link in webdriver.find_elements(By.TAG_NAME, "a"):
         if link.text == BUTTON_TEXT_DOWNLOAD_EPUB:
-            file_name = link.get_attribute("href").split("/")[-1]
             link.click()
             break
 
-    if not file_name:
-        raise RuntimeError("Could not locate download button, check your login credentials.")
+    e_paper_path = _get_latest_downloaded_file_path(webdriver.download_dir_path)
 
-    return file_name
+    if not e_paper_path.is_file():
+        raise RuntimeError("Could not download e paper, check your login credentials.")
+
+    return e_paper_path
