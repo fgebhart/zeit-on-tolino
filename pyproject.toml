@@ -23,7 +23,7 @@ black = "^22.10.0"
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 pre-commit = "^2.20.0"
-ipython = "^8.6.0"
+ipython = "^8.10.0"
 ipdb = "^0.13.9"
 
 [build-system]
