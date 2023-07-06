@@ -1,7 +1,9 @@
 
 name: Python Tests
 
-on: [pull_request]
+on:
+  pull_request:
+  workflow_dispatch:  # allow running tests via github ui button
 
 jobs:
   test:
