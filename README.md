@@ -21,7 +21,7 @@ have to worry about the runtime environment of the scripts. See usage instructio
 1. Observe that your forked repo automatically triggers the sync,
    [given the configuration of the scheduled trigger](https://github.com/fgebhart/zeit-on-tolino/blob/main/.github/workflows/sync_to_tolino_cloud.yml#L5-L7).
 
-For a more detailed step-by-step guide check out [my blog post about `zeit-on-tolino`](https://blog.fgebhart.dev/blog/auto-sync-zeit-epub-to-your-tolino/).
+For a more detailed step-by-step guide check out [my blog post about `zeit-on-tolino`](https://blog.fgebhart.dev/2022/auto-sync-zeit-epub-to-your-tolino/).
 
 
 ## FAQ
