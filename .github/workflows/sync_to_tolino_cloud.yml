@@ -7,12 +7,13 @@ on:
       # Rational for running multiple times is to catch the new release as early as possible. Note,
       # in case the most recent release is uploaded to your tolino cloud, the subsequent runs of this 
       # action are expected to fail.
+    - cron: '06 17 * * WED'   # corresponds to 19:06 CEST
+    - cron: '36 17 * * WED'   # corresponds to 19:36 CEST
     - cron: '06 18 * * WED'   # corresponds to 20:06 CEST
     - cron: '36 18 * * WED'   # corresponds to 20:36 CEST
     - cron: '06 19 * * WED'   # corresponds to 21:06 CEST
     - cron: '36 19 * * WED'   # corresponds to 21:36 CEST
     - cron: '06 20 * * WED'   # corresponds to 22:06 CEST
-    - cron: '36 20 * * WED'   # corresponds to 22:31 CEST
   workflow_dispatch:  # allow running sync via github ui button
 
 
