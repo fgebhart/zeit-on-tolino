@@ -30,7 +30,15 @@ hugendubel = ShopDetails(
     shop_image_keyword="hugendubel",
 )
 
+buecher-de = ShopDetails(
+    user=SeleniumItem(by=By.ID, value="form_login"),
+    password=SeleniumItem(by=By.ID, value="form_password"),
+    login_button=SeleniumItem(by=By.CLASS_NAME, value="btn-primary.pull-right"),
+    shop_image_keyword="buecher-de",
+)
+
 
 class PartnerDetails(Enum):
     thalia: ShopDetails = thalia
     hugendubel: ShopDetails = hugendubel
+    buecher-de: ShopDetails = buecher-de
