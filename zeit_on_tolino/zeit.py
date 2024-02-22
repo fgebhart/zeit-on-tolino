@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from zeit_on_tolino.env_vars import EnvVars, MissingEnvironmentVariable
 from zeit_on_tolino.web import Delay
 
-ZEIT_LOGIN_URL = "https://premium.zeit.de/"
+ZEIT_LOGIN_URL = "https://epaper.zeit.de/abo/diezeit"
 ZEIT_DATE_FORMAT = "%d.%m.%Y"
 
 BUTTON_TEXT_TO_RECENT_EDITION = "ZUR AKTUELLEN AUSGABE"
@@ -36,11 +36,6 @@ def _get_credentials() -> Tuple[str, str]:
 def _login(webdriver: WebDriver) -> None:
     username, password = _get_credentials()
     webdriver.get(ZEIT_LOGIN_URL)
-
-    WebDriverWait(webdriver, Delay.medium).until(EC.presence_of_element_located((By.CLASS_NAME, "nav__login-link")))
-    btn = webdriver.find_element(By.CLASS_NAME, "nav__login-link")
-    btn.click()
-    assert "anmelden" in webdriver.current_url, webdriver.current_url
 
     username_field = webdriver.find_element(By.ID, "login_email")
     username_field.send_keys(username)
