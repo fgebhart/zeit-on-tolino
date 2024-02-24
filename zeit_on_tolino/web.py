@@ -20,6 +20,7 @@ class Delay:
 def get_webdriver(download_path: Union[Path, str] = DOWNLOAD_PATH) -> WebDriver:
     options = FirefoxOptions()
     options.headless = True
+    # options.headless = False
     options.set_preference("browser.download.folderList", 2)
     options.set_preference("browser.download.dir", str(download_path))
     webdriver = Firefox(options=options)
