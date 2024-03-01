@@ -20,7 +20,7 @@ on:
 jobs:
   test:
     name: Zeit to Tolino Cloud
-    runs-on: ubuntu-20.04  # pinned to 20 as 22 was lacking geckodriver
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
