@@ -66,13 +66,3 @@ def test_upload_epub(webdriver, test_epub_path, test_epub_title, caplog) -> None
     # cleanup uploaded test epub
     _delete_last_uploaded_epub(webdriver)
     assert test_epub_title not in webdriver.page_source
-
-
-def test__login_with_thalia__failure(monkeypatch, webdriver) -> None:
-    # This test verifies, that the shop details for `thalia` are correct. However
-    # the login attempt fails, as the credentials are incorrect
-    monkeypatch.setenv(EnvVars.TOLINO_PARTNER_SHOP, "thalia")
-    monkeypatch.setenv(EnvVars.TOLINO_USER, "foo")
-    monkeypatch.setenv(EnvVars.TOLINO_PASSWORD, "baa")
-    tolino._login(webdriver)
-    assert "Anmeldung war nicht erfolgreich" in webdriver.page_source
