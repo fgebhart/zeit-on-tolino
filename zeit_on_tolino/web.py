@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Union
 
-from selenium.webdriver import Firefox, FirefoxOptions
+from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver.firefox.webdriver import WebDriver
 
 DOWNLOAD_PATH = tempfile.TemporaryDirectory().name
@@ -18,10 +18,10 @@ class Delay:
 
 
 def get_webdriver(download_path: Union[Path, str] = DOWNLOAD_PATH) -> WebDriver:
-    options = FirefoxOptions()
+    options = ChromeOptions()
+    prefs = {"download.default_directory" : f"{download_path}/"}
+    options.add_experimental_option("prefs",prefs)
     options.add_argument("--headless")
-    options.set_preference("browser.download.folderList", 2)
-    options.set_preference("browser.download.dir", str(download_path))
-    webdriver = Firefox(options=options)
+    webdriver = Chrome(options=options)
     setattr(webdriver, "download_dir_path", str(download_path))
     return webdriver

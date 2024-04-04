@@ -1,3 +1,4 @@
+import logging
 import glob
 import os
 import time
@@ -19,6 +20,7 @@ BUTTON_TEXT_TO_RECENT_EDITION = "ZUR AKTUELLEN AUSGABE"
 BUTTON_TEXT_DOWNLOAD_EPUB = "EPUB FÜR E-READER LADEN"
 BUTTON_TEXT_EPUB_DOWNLOAD_IS_PENDING = "EPUB FOLGT IN KÜRZE"
 
+log = logging.getLogger(__name__)
 
 def _get_credentials() -> Tuple[str, str]:
     try:
@@ -58,6 +60,18 @@ def _get_latest_downloaded_file_path(download_dir: str) -> Path:
     return Path(latest_file)
 
 
+def wait_for_downloads(path):
+    time.sleep(Delay.small)
+    start = time.time()
+    while any([filename.endswith(".crdownload") for filename in os.listdir(path)]):
+        now = time.time()
+        if now > start + Delay.large:
+            raise TimeoutError(f"Did not manage to download file within {Delay.large} seconds.")
+        else:
+            log.info(f"waiting for download to be finished...")
+            time.sleep(2)
+
+
 def download_e_paper(webdriver: WebDriver) -> str:
     _login(webdriver)
 
@@ -73,9 +87,11 @@ def download_e_paper(webdriver: WebDriver) -> str:
     time.sleep(Delay.small)
     for link in webdriver.find_elements(By.TAG_NAME, "a"):
         if link.text == BUTTON_TEXT_DOWNLOAD_EPUB:
+            log.info("clicking download button now...")
             link.click()
             break
 
+    wait_for_downloads(webdriver.download_dir_path)
     e_paper_path = _get_latest_downloaded_file_path(webdriver.download_dir_path)
 
     if not e_paper_path.is_file():
