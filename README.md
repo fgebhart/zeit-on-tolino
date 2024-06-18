@@ -1,6 +1,8 @@
 # zeit-on-tolino
 Service to auto-upload the ZEIT 🗞 e-paper to your Tolino cloud library 📚
 
+⚠️ As I switched to a different e-reader, zeit-on-tolino is no longer actively maintained. Use it with caution and feel free to fork. ⚠️
+
 ## Why yet another zeit-on-tolino service?
 I know there are a bunch of similar repos out there, but as far as I know, they all depend on some additional resources
 which take care of triggering and executing the syncing mechanism. `zeit-on-tolino` solves this by using GitHub actions.
